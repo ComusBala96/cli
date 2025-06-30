@@ -1,0 +1,20 @@
+{
+    "name": "@orian/cli",
+    "description": "The cli is defined here.",
+    "version": "1.0.0",
+    "main": "index.js",
+    "type": "module",
+    "keywords": [],
+    "author": {
+        "name": "OrianSoft",
+        "email": "info@oriansoft.com"
+    },
+    "license": "MIT",
+    "bin": {
+        "orian": "./index.js"
+    },
+    "scripts": {
+        "start": "node index.js"
+    },
+    "dependencies": {}
+}
