@@ -15,7 +15,7 @@ yarn add @oriansoft/cli
 ## Uses
 
 ```bash
-orian create;
+orian create
 ```
 
 ## Credits
