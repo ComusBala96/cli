@@ -3,7 +3,7 @@ import { toPascalCase } from "../../utils/functions/functions.mjs";
 export function getTableJavaScript(res) {
     let namespace = res?.namespace?.toLowerCase();
     let name = toPascalCase(res?.name?.toLowerCase());
-    return `import { ajaxRequest, domain_url, downloadExcel, downloadPdf, G, makeAjaxDataTable } from '@orian/utils';
+    return `import { ajaxRequest, domain_url, downloadExcel, downloadPdf, G, makeAjaxDataTable } from '@oriansoft/utils';
     
     $(document).ready(function () {    
         if ($('#dt${name}').length > 0) {

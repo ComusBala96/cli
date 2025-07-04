@@ -1,10 +1,19 @@
 {
-    "name": "@orian/cli",
-    "description": "The cli is defined here.",
+    "name": "@oriansoft/cli",
     "version": "1.0.0",
-    "main": "index.js",
+    "publishConfig": {
+        "access": "public"
+    },
     "type": "module",
-    "keywords": [],
+    "main": "index.js",
+    "homepage": "https://github.com/ComusBala96/cli.git",
+    "description": "A npm package cli for OrianSoft",
+    "keywords": [
+        "oriansoft",
+        "npm",
+        "@oriansoft",
+        "cli"
+    ],
     "author": {
         "name": "OrianSoft",
         "email": "info@oriansoft.com"
@@ -16,5 +25,13 @@
     "scripts": {
         "start": "node index.js"
     },
-    "dependencies": {}
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/ComusBala96/cli.git"
+    },
+    "dependencies": {
+        "pluralize": "^8.0.0",
+        "inquirer": "8.2.6"
+    },
+    "devDependencies": {}
 }
