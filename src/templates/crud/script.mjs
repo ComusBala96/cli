@@ -3,7 +3,7 @@ import { excludeFirstPath, toPascalCase } from "../../utils/functions/functions.
 export function getJavaScript(res) {
     let namespace = res?.namespace?.toLowerCase();
     let name = toPascalCase(res?.name?.toLowerCase());
-    return `import { ajaxRequest, domain_url, downloadExcel, downloadPdf, G, makeAjaxDataTable } from '@oriansoft/utils';
+    return `import { ajaxRequest, domain_url, downloadExcel, downloadPdf, G, makeAjaxDataTable } from '@orians/utils';
     
     $(document).ready(function () {
         if ($('#frmCreate${name}').length > 0) {

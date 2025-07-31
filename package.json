@@ -1,6 +1,6 @@
 {
-    "name": "@oriansoft/cli",
-    "version": "1.0.1",
+    "name": "@orians/cli",
+    "version": "1.0.0",
     "publishConfig": {
         "access": "public"
     },
@@ -9,9 +9,9 @@
     "homepage": "https://github.com/ComusBala96/cli.git",
     "description": "A npm package cli for OrianSoft",
     "keywords": [
-        "oriansoft",
+        "orians",
         "npm",
-        "@oriansoft",
+        "@orians",
         "cli"
     ],
     "author": {

@@ -3,13 +3,13 @@
 ## Installation
 
 ```npm
-npm i @oriansoft/cli
+npm i @orians/cli
 ```
 
 ## Or
 
 ```yarn
-yarn add @oriansoft/cli
+yarn add @orians/cli
 ```
 
 ## Uses
