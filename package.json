@@ -30,8 +30,7 @@
         "url": "git+https://github.com/ComusBala96/cli.git"
     },
     "dependencies": {
-        "pluralize": "^8.0.0",
-        "inquirer": "8.2.6"
-    },
-    "devDependencies": {}
+        "inquirer": "8.2.6",
+        "pluralize": "^8.0.0"
+    }
 }
