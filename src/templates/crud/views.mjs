@@ -36,7 +36,7 @@ export function getViewMarkup(res) {
                             @else
                                 @include("common.views.no_data_found", [
                                     "title" => __("common.errors.no_history"),
-                                    "message" => __("common.errors.click_add_new"),
+                                    "message" => "",
                                     "url" => "",
                                     "btn_text" => "",
                                 ])
