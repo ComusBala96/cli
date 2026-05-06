@@ -1,17 +1,19 @@
 {
     "name": "@orians/cli",
-    "version": "1.0.0",
-    "publishConfig": {
-        "access": "public"
-    },
-    "type": "module",
-    "main": "index.js",
+    "version": "2.0.0",
     "homepage": "https://github.com/ComusBala96/cli.git",
     "description": "A npm package cli for OrianSoft",
+    "type": "module",
+    "main": "cjs/index.js",
+    "module": "esm/index.js",
+    "types": "esm/index.d.ts",
+    "bin": {
+        "orian": "./esm/bin.js"
+    },
     "keywords": [
         "orians",
         "npm",
-        "@orians",
+        "@orians/cli",
         "cli"
     ],
     "author": {
@@ -19,18 +21,41 @@
         "email": "info@oriansoft.com"
     },
     "license": "MIT",
-    "bin": {
-        "orian": "./index.js"
-    },
+    "files": [
+        "esm",
+        "cjs"
+    ],
     "scripts": {
-        "start": "node index.js"
+        "start": "node index.js",
+        "dev": "tsx src/bin.ts",
+        "clean": "rimraf esm cjs",
+        "build:esm": "tsc -p tsconfig.esm.json",
+        "build:cjs": "tsc -p tsconfig.cjs.json",
+        "build:esm:watch": "tsc -p tsconfig.esm.json --watch",
+        "build:cjs:watch": "tsc -p tsconfig.cjs.json --watch",
+        "build": "npm run clean && npm run build:esm && npm run build:cjs"
+
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/ComusBala96/cli.git"
     },
+    "publishConfig": {
+        "registry": "https://npm.pkg.github.com"
+    },
     "dependencies": {
+        "chalk": "^5.4.1",
+        "commander": "^13.1.0",
+        "fast-glob": "^3.3.3",
+        "fs-extra": "^11.3.0",
         "inquirer": "8.2.6",
         "pluralize": "^8.0.0"
+    },
+    "devDependencies": {
+        "@types/fs-extra": "^11.0.4",
+        "@types/node": "^25.5.0",
+        "typescript": "^5.9.3",
+        "tsx": "^4.20.0",
+        "rimraf": "^6.0.1"
     }
 }

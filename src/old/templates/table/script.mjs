@@ -3,11 +3,11 @@ import { toPascalCase } from "../../utils/functions/functions.mjs";
 export function getTableJavaScript(res) {
     let namespace = res?.namespace?.toLowerCase();
     let name = toPascalCase(res?.name?.toLowerCase());
-    return `import { ajaxRequest, domain_url, downloadExcel, downloadPdf, G, makeAjaxDataTable } from '@orians/utils';
+    return `import { ajax, domain_url, downloadExcel, downloadPdf, G, makeAjaxDataTable } from '@orians/utils';
     
-    $(document).ready(function () {    
+    $(function () {    
         if ($('#dt${name}').length > 0) {
-            const lang = G.pageLang;
+            const lang = config.pageLang;
             const {table} = lang;
             let col_draft = [
                 {

@@ -62,7 +62,7 @@ class ${name}Repository extends BaseRepository implements I${name}Repository
         try {
             $m = new ${model}();
             $m->uuid = (string)Uuid::generate(4);
-            $m->serial = $this->facSrWc($this->${model});
+            $m->serial = $this->getSerial($this->${model});
             $m->name = $request->name;
             $m->save();
 
