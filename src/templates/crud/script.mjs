@@ -3,9 +3,9 @@ import { excludeFirstPath, toPascalCase } from "../../utils/functions/functions.
 export function getJavaScript(res) {
     let namespace = res?.namespace?.toLowerCase();
     let name = toPascalCase(res?.name?.toLowerCase());
-    return `import { ajax, domain_url, downloadExcel, downloadPdf, G, makeAjaxDataTable } from '@orians/utils';
+    return `import { ajaxRequest, domain_url, downloadExcel, downloadPdf, G, makeAjaxDataTable } from '@orians/utils';
     
-    $(function () {
+    $(document).ready(function () {
         if ($('#frmCreate${name}').length > 0) {
             let rules = {
                 name: {
@@ -13,7 +13,7 @@ export function getJavaScript(res) {
                     maxlength: 253,
                 },
             };
-            ajax({
+            ajaxRequest({
                 element: 'frmCreate${name}',
                 validation: true,
                 script: '${namespace}/create',
@@ -30,7 +30,7 @@ export function getJavaScript(res) {
                     maxlength: 253
                 },
             };
-            ajax({
+            ajaxRequest({
                 element: "frmUpdate${name}",
                 validation: true,
                 script: "${namespace}/update",
@@ -42,7 +42,7 @@ export function getJavaScript(res) {
         }
     
         if ($('#dt${name}').length > 0) {
-            const lang = config.pageLang;
+            const lang = G.pageLang;
             const {table} = lang;
             let col_draft = [
                 {
@@ -83,13 +83,13 @@ export function getJavaScript(res) {
     });
     
     window.dt${name} = (table, api, op) => {
-        config.deleteAll({
+        G.deleteAll({
             element: 'deleteAll${name}',
             script: '${namespace}/delete',
             confirm: true,
             api,
         });
-        config.updateAll({
+        G.updateAll({
             element: "updateAll${name}",
             script: "${namespace}/updateRow",
             confirm: true,

@@ -3,9 +3,9 @@ import { toPascalCase } from "../../utils/functions/functions.mjs";
 export function getInterfaceJavaScript(res) {
     let namespace = res?.namespace?.toLowerCase();
     let name = toPascalCase(res?.name?.toLowerCase());
-    return `import { ajax, domain_url, downloadExcel, downloadPdf, G, makeAjaxDataTable } from '@orians/utils';
+    return `import { ajaxRequest, domain_url, downloadExcel, downloadPdf, G, makeAjaxDataTable } from '@orians/utils';
     
-    $(function () {
+    $(document).ready(function () {
         if ($("#frmUpdate${name}").length > 0) {
             let rules = {
                 name: {
@@ -13,7 +13,7 @@ export function getInterfaceJavaScript(res) {
                     maxlength: 253
                 },
             };
-            ajax({
+            ajaxRequest({
                 element: "frmUpdate${name}",
                 validation: true,
                 script: "${namespace}/update",
