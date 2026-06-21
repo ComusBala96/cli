@@ -24,7 +24,7 @@ class ${name}GetController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            '${arr[0] == 'admin' ? 'auth:web' : ''}',
+            '${arr[0] == 'admin' ? 'auth:admin' : 'auth:web'}',
         ];
     }
 
@@ -50,6 +50,7 @@ class ${name}GetController extends Controller implements HasMiddleware
 export function postController(res) {
     let space = joinBackSlash(res?.namespace?.toLowerCase());
     let name = toPascalCase(res?.name?.toLowerCase());
+    let arr = res?.namespace.split('/');
     return `<?php
 
 namespace App\\Http\\Controllers\\${space};
@@ -57,40 +58,40 @@ namespace App\\Http\\Controllers\\${space};
 use App\\Traits\\BaseTrait;
 use Illuminate\\Http\\Request;
 use App\\Http\\Controllers\\Controller;
-use App\\Repositories\\${space}\\I${name}Repository;
+use App\\Repositories\\${space}\\${name}Interface;
 use App\\Http\\Requests\\${space}\\ValidateCreate${name};
 
 class ${name}PostController extends Controller
 {
     use BaseTrait;
 
-    public function __construct(private I${name}Repository $I${name}Repo)
+    public function __construct(private ${name}Interface $${name}Interface)
     {
-        $this->LoadModels(['User']);
+        $this->LoadModels(['${arr[0] == 'admin' ? 'Admin' : 'User'}']);
     }
 
     public function create(ValidateCreate${name} $request)
     {
-        $auth = $this->checkExists($request, 'User|uuid|created_by', ['id', 'name']);
+        $auth = $this->checkExists($request, '${arr[0] == 'admin' ? 'Admin' : 'User'}|uuid|created_by', ['id', 'name']);
         if (empty($auth)) {
-            return $this->response(['type' => 'noUpdate', 'title' => 'Item not found']);
+            return $this->exists();
         }
-        return $this->I${name}Repo->create($request, ['created_by' => $auth->id]);
-    }
-
-    public function delete(Request $request)
-    {
-        return $this->I${name}Repo->delete($request);
+        return $this->${name}Interface->create($request, ['created_by' => $auth->id]);
     }
 
     public function update(Request $request)
+    {   
+        return $this->${name}Interface->update($request);
+    }
+        
+    public function updateTable(Request $request)
     {
-        return $this->I${name}Repo->update($request);
+        return $this->${name}Interface->updateTable($request);
     }
 
-    public function updateRow(Request $request)
+    public function deleteTable(Request $request)
     {
-        return $this->I${name}Repo->updateRow($request);
+        return $this->${name}Interface->deleteTable($request);
     }
 }`
 }
@@ -105,20 +106,20 @@ namespace App\\Http\\Controllers\\${space};
 use App\\Traits\\BaseTrait;
 use Illuminate\\Http\\Request;
 use App\\Http\\Controllers\\Controller;
-use App\\Repositories\\${space}\\I${name}Repository;
+use App\\Repositories\\${space}\\${name}Interface;
 
 class ${name}ApiController extends Controller
 {
     use BaseTrait;
 
-    public function __construct(private I${name}Repository $I${name}Repo)
+    public function __construct(private ${name}Interface $${name}Interface)
     {
         $this->LoadModels(['${model}']);
     }
 
     public function list(Request $request)
     {
-        return $this->I${name}Repo->list($this->${model}, $request);
+        return $this->${name}Interface->list($this->${model}, $request);
     }
 }`
 }

@@ -16,8 +16,10 @@ export function createCrudScript(res) {
         console.log(name + ' Script Already Exists');
     }
     let importPath = getPath(res, 'import');
-    let fileName = getFirstString(namespace)?.toLowerCase()
+    let fileName = 'pages';
     let file = getFile(importPath, fileName, ext);
+    console.log(importPath, file);
+    
     updateFile(file, (err, data) => {
         const bindPattern = /\/\/bind\s*\n/;
         const bindInsert = `//bind\n    ${bindingScript(res)}\n`;

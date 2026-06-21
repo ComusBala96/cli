@@ -21,8 +21,7 @@ class ValidateCreate${name} extends FormRequest
 
     public function message(): array
     {
-        return [
-        ];
+        return [];
     }
 
     /**
@@ -35,6 +34,20 @@ class ValidateCreate${name} extends FormRequest
         return [
             'name' => 'required|string|max:253',
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        $response = response()->json([
+            'type' => 'validation',
+            'success' => false,
+            'error' => true,
+            'tost' => true,
+            'message' => trans('alerts.failed'),
+            'errors' => $validator->errors(),
+            'data' => ['message' => trans('alerts.failed'), 'errors' => $validator->errors()]
+        ]);
+        throw (new ValidationException($validator, $response))->errorBag($this->errorBag);
     }
 }`
 }

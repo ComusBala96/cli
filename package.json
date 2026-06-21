@@ -20,7 +20,7 @@
     },
     "license": "MIT",
     "bin": {
-        "orian": "./index.js"
+        "os": "./index.js"
     },
     "scripts": {
         "start": "node index.js"

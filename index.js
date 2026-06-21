@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+
 import inquirer from 'inquirer';
 import { getProjectsDir } from './src/utils/functions/functions.mjs';
 import { actions, operations } from './src/utils/definitions/definitions.mjs';
@@ -6,155 +7,104 @@ import { createCrud } from './src/utils/crud/crud.mjs';
 import { createTable } from './src/utils/table/table.mjs';
 import { createInterface } from './src/utils/interface/interface.mjs';
 
-let data = {};
-if (process.argv[2] == 'create') {
-    inquirer.prompt([
+async function askProject() {
+    return await inquirer.prompt([
         {
             type: 'list',
             name: 'project',
-            message: 'Choose the project where you want to install?',
+            message: 'Choose project:',
             choices: getProjectsDir(),
-        }
-    ]).then((res) => {
-        if (res.project == 'lensasia') {
-            data = { ...data, project: res.project };
-            inquirer.prompt([
-                {
-                    type: 'list',
-                    name: 'action',
-                    message: 'What action do you want to perform?',
-                    choices: actions,
-                }
-            ]).then((res) => {
-                if (res.action == 'create') {
-                    inquirer.prompt([
-                        {
-                            type: 'list',
-                            name: 'operation',
-                            message: 'What operation do you want to perform?',
-                            choices: operations,
-                        }
-                    ]).then((res) => {
-                        if (res.operation == 'crud') {
-                            data = { ...data, operation: res.operation };
-                            inquirer.prompt([
-                                {
-                                    type: 'input',
-                                    name: 'namespace',
-                                    message: 'Enter namespace.eg. admin/dashboard/../..?',
-                                }
-                            ]).then((res) => {
-                                if (res.namespace) {
-                                    data = { ...data, namespace: res.namespace.trim() };
-                                    inquirer.prompt([
-                                        {
-                                            type: 'input',
-                                            name: 'name',
-                                            message: 'Enter module name.eg. Breaking/News/../..?',
-                                        }
-                                    ]).then((res) => {
-                                        if (res.name) {
-                                            data = { ...data, name: res.name.trim() };
-                                            inquirer.prompt([
-                                                {
-                                                    type: 'input',
-                                                    name: 'model',
-                                                    message: 'Enter model name.Eg. User?',
-                                                }
-                                            ]).then((res) => {
-                                                if (res.model) {
-                                                    data = { ...data, model: res.model.trim() };
-                                                    createCrud(data);
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                        if (res.operation == 'table') {
-                            data = { ...data, operation: res.operation };
-                            inquirer.prompt([
-                                {
-                                    type: 'input',
-                                    name: 'namespace',
-                                    message: 'Enter namespace.eg. admin/dashboard/../..?',
-                                }
-                            ]).then((res) => {
-                                if (res.namespace) {
-                                    data = { ...data, namespace: res.namespace.trim() };
-                                    inquirer.prompt([
-                                        {
-                                            type: 'input',
-                                            name: 'name',
-                                            message: 'Enter module name.eg. Breaking/News/../..?',
-                                        }
-                                    ]).then((res) => {
-                                        if (res.name) {
-                                            data = { ...data, name: res.name.trim() };
-                                            inquirer.prompt([
-                                                {
-                                                    type: 'input',
-                                                    name: 'model',
-                                                    message: 'Enter model name.Eg. User?',
-                                                }
-                                            ]).then((res) => {
-                                                if (res.model) {
-                                                    data = { ...data, model: res.model.trim() };
-                                                    createTable(data);
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                        if (res.operation == 'interface') {
-                            data = { ...data, operation: res.operation };
-                            inquirer.prompt([
-                                {
-                                    type: 'input',
-                                    name: 'namespace',
-                                    message: 'Enter namespace.eg. admin/dashboard/../..?',
-                                }
-                            ]).then((res) => {
-                                if (res.namespace) {
-                                    data = { ...data, namespace: res.namespace.trim() };
-                                    inquirer.prompt([
-                                        {
-                                            type: 'input',
-                                            name: 'name',
-                                            message: 'Enter module name.eg. Breaking/News/../..?',
-                                        }
-                                    ]).then((res) => {
-                                        if (res.name) {
-                                            data = { ...data, name: res.name.trim() };
-                                            inquirer.prompt([
-                                                {
-                                                    type: 'input',
-                                                    name: 'model',
-                                                    message: 'Enter model name.Eg. User?',
-                                                }
-                                            ]).then((res) => {
-                                                if (res.model) {
-                                                    data = { ...data, model: res.model.trim() };
-                                                    createInterface(data);
-                                                }
-                                            });
-                                        }
-                                    });
-                                }
-                            });
-                        }
-                    });
-                }
-            });
-        }
-    });
+        },
+    ]);
 }
 
-// if (process.argv[0]) {
-//     console.log('Welcome to oriansoft.');
-    
-      
-// }
+async function askAction() {
+    return await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'action',
+            message: 'Choose action:',
+            choices: actions,
+        },
+    ]);
+}
+
+async function askOperation() {
+    return await inquirer.prompt([
+        {
+            type: 'list',
+            name: 'operation',
+            message: 'Choose operation:',
+            choices: operations,
+        },
+    ]);
+}
+
+async function askModuleInfo() {
+    return await inquirer.prompt([
+        {
+            type: 'input',
+            name: 'namespace',
+            message: 'Namespace:',
+        },
+        {
+            type: 'input',
+            name: 'name',
+            message: 'Module name:',
+        },
+        {
+            type: 'input',
+            name: 'model',
+            message: 'Model name:',
+        },
+    ]);
+}
+
+async function run() {
+    if (process.argv[2] !== 'create') {
+        console.log('Usage: orian create');
+        return;
+    }
+
+    const { project } = await askProject();
+
+    // if (project !== 'lensasia') {
+    //     console.log(`Project "${project}" is not supported yet.`);
+    //     return;
+    // }
+
+    const { action } = await askAction();
+
+    if (action !== 'create') {
+        return;
+    }
+
+    const { operation } = await askOperation();
+
+    const moduleData = await askModuleInfo();
+
+    const data = {
+        project,
+        operation,
+        ...moduleData,
+    };
+
+    switch (operation) {
+        case 'crud':
+            createCrud(data);
+            break;
+
+        case 'table':
+            createTable(data);
+            break;
+
+        case 'interface':
+            createInterface(data);
+            break;
+
+        default:
+            console.log('Invalid operation');
+    }
+}
+
+run().catch(console.error);

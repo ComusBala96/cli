@@ -1,10 +1,12 @@
-import { toPascalCase } from "../../utils/functions/functions.mjs";
+import { toPascalCase } from '../../utils/functions/functions.mjs';
 
 export function getInterfaceViewMarkup(res) {
     let name = toPascalCase(res?.name?.toLowerCase());
-    return `@extends("admin.layouts.admin_layout", ["title" => __($data["lang"] . ".title")])
+    let namespace = res?.namespace?.toLowerCase();
+    let arr = namespace.split('/');
+    return `@extends("${arr[0]}.layouts.${arr[0]}_layout", ["title" => __($data["lang"] . ".title")])
 @section("breadcrumbs")
-    @include("admin.common.bread.breadcrumbs", ["breadcrumbs" => __($data["lang"] . ".breadcrumbs")])
+    @include("${arr[0]}.common.bread.breadcrumbs", ["breadcrumbs" => __($data["lang"] . ".breadcrumbs")])
 @endsection
 
 @section("pages")
@@ -25,7 +27,7 @@ export function getInterfaceViewMarkup(res) {
                                 </div>
                                 <div class="text-right">
                                     <button class="rounded bg-blue-500 px-4 py-2 text-sm text-white hover:bg-blue-600">
-                                        <span>{{ __("common.btns.changes") }}</span>
+                                        <span>{{ __("buttons.changes") }}</span>
                                     </button>
                                 </div>
                             </div>
@@ -35,5 +37,5 @@ export function getInterfaceViewMarkup(res) {
             </div>
         </div>
     </div>
-@endsection`
+@endsection`;
 }

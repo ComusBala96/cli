@@ -7,7 +7,7 @@ export function getTableIRepo(res) {
 
 namespace App\\Repositories\\${space};
 
-interface I${name}Repository
+interface ${name}Interface
 {
     public function list($model, $request);
 }`
@@ -24,9 +24,9 @@ use Carbon\\Carbon;
 use App\\Traits\\BaseTrait;
 use Yajra\\DataTables\\DataTables;
 use App\\Repositories\\BaseRepository;
-use App\\Repositories\\${space}\\I${name}Repository;
+use App\\Repositories\\${space}\\${name}Interface;
 
-class ${name}Repository extends BaseRepository implements I${name}Repository
+class ${name}Repository extends BaseRepository implements ${name}Interface
 {
     use BaseTrait;
 

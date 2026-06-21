@@ -5,7 +5,7 @@ import { createDir, createFile, fileExits, getFile, getPath, toPascalCase } from
 export function createCrudRequest(res) {
     let path = getPath(res, 'request');
     let ext = php;
-    let createName = 'ValidateCreate' + toPascalCase(res?.name?.toLowerCase());
+    let createName = 'ValidateCreate' + toPascalCase(res?.name);
     let createData = getCreateRequest(res);
     if (!fileExits(path + createName + ext)) {
         createDir(path);
@@ -14,7 +14,7 @@ export function createCrudRequest(res) {
     } else {
         console.log(createName + ' Request Already Exists');
     }
-    let updateName = 'ValidateUpdate' + toPascalCase(res?.name?.toLowerCase());
+    let updateName = 'ValidateUpdate' + toPascalCase(res?.name);
     let updateData = getUpdateRequest(res);
     if (!fileExits(path + updateName + ext)) {
         createDir(path);

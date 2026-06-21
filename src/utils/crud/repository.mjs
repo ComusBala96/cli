@@ -5,7 +5,7 @@ import { createDir, createFile, fileExits, getFile, getPath, toPascalCase } from
 export function createCrudRepo(res) {
     let path = getPath(res, 'repository');
     let ext = php;
-    let IName = 'I' + toPascalCase(res?.name?.toLowerCase()) + 'Repository';
+    let IName = toPascalCase(res?.name?.toLowerCase()) + 'Interface';
     let IData = getIRepo(res);
     if (!fileExits(path + IName + ext)) {
         createDir(path);

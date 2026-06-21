@@ -24,7 +24,7 @@ class ${name}GetController extends Controller implements HasMiddleware
     public static function middleware(): array
     {
         return [
-            '${arr[0] == 'admin' ? 'auth:web' : ''}',
+            '${arr[0] == 'admin' ? 'auth:admin' : 'auth:web'}',
         ];
     }
 
@@ -53,21 +53,21 @@ namespace App\\Http\\Controllers\\${space};
 use App\\Traits\\BaseTrait;
 use Illuminate\\Http\\Request;
 use App\\Http\\Controllers\\Controller;
-use App\\Repositories\\${space}\\I${name}Repository;
+use App\\Repositories\\${space}\\${name}Interface;
 use App\\Http\\Requests\\${space}\\ValidateCreate${name};
 
 class ${name}PostController extends Controller
 {
     use BaseTrait;
 
-    public function __construct(private I${name}Repository $I${name}Repo)
+    public function __construct(private ${name}Interface $${name}Interface)
     {
         $this->LoadModels(['User']);
     }
 
     public function update(Request $request)
     {
-        return $this->I${name}Repo->update($request);
+        return $this->${name}Interface->update($request);
     }
 }`
 }

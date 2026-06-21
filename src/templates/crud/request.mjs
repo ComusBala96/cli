@@ -23,8 +23,7 @@ class ValidateCreate${name} extends FormRequest
 
     public function message(): array
     {
-        return [
-        ];
+        return [];
     }
 
     /**
@@ -42,8 +41,13 @@ class ValidateCreate${name} extends FormRequest
     protected function failedValidation(Validator $validator)
     {
         $response = response()->json([
+            'type' => 'validation',
             'success' => false,
+            'error' => true,
+            'tost' => true,
+            'message' => trans('alerts.failed'),
             'errors' => $validator->errors(),
+            'data' => ['message' => trans('alerts.failed'), 'errors' => $validator->errors()]
         ]);
         throw (new ValidationException($validator, $response))->errorBag($this->errorBag);
     }
@@ -68,8 +72,7 @@ class ValidateUpdate${name} extends FormRequest
 
     public function message(): array
     {
-        return [
-        ];
+        return [];
     }
 
     public function rules($row): array

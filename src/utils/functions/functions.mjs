@@ -32,9 +32,9 @@ export function getPath(res, type) {
         case 'provider':
             return path.join(projectDir + providerDir);
         case 'script':
-            return path.join(scriptDir + excludeLastPath(namespace?.toLowerCase()) + '/');
+            return path.join(projectDir + scriptDir + excludeLastPath(addPagePath(res)) + '/');
         case 'import':
-            return path.join(scriptDir + getFirstString(namespace)?.toLowerCase() + '/');
+            return path.join(projectDir + scriptDir + getFirstString(namespace)?.toLowerCase() + '/pages/');
     }
 }
 export function fileExits(path) {
@@ -81,7 +81,7 @@ export function toSentenceCase(namespace, separator) {
 }
 export function toPascalCase(str) {
     return str
-      .split(/[^a-zA-Z0-9]/)
+      .split(/[^a-zA-Z0-9]+/)
       .filter(Boolean)       
       .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
       .join('');
@@ -115,7 +115,7 @@ export function addPagePath(res) {
     return path?.join('/');
 }
 export function addViewName(res) {
-    return 'view' + toPascalCase(res?.name?.toLowerCase());
+    return 'view' + toPascalCase(res?.name);
 }
 export function convertToDotPath(str) {
     let arr = str?.split('/');

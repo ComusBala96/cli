@@ -25,11 +25,11 @@ use Webpatser\\Uuid\\Uuid;
 use App\\Traits\\BaseTrait;
 use App\\Repositories\\BaseRepository;
 use Illuminate\\Support\\Facades\\Validator;
-use App\\Repositories\\${space}\\I${name}Repository;
+use App\\Repositories\\${space}\\${name}Interface;
 use App\\Http\\Requests\\${space}\\ValidateCreate${name};
 use App\\Http\\Requests\\${space}\\ValidateUpdate${name};
 
-class ${name}Repository extends BaseRepository implements I${name}Repository
+class ${name}Repository extends BaseRepository implements ${name}Interface
 {
     use BaseTrait;
 
@@ -44,41 +44,35 @@ class ${name}Repository extends BaseRepository implements I${name}Repository
         if (empty($row)) {
             $validator = Validator::make($request->all(), (new ValidateCreate${name}())->rules());
             if ($validator->fails()) {
-                return $this->response(['type' => 'validation', 'errors' => $validator->errors()]);
+                return $this->failed(['errors' => $validator->errors()]);
             }
-            try {
+            return self::try(function() use($request) {
                 $m = new ${model}();
                 $m->uuid = (string)Uuid::generate(4);
                 $m->name = $request->name;
                 $m->save();
 
-                $response['extraData'] = [
-                    'inflate' => 'Added successfully'
+                $data = [
+                    'message' => 'Added successfully'
                 ];
-                return $this->response(['type' => 'success', 'data' => $response]);
-            } catch (\\Exception $e) {
-                $this->saveError($this->getSystemError(['name' => '${toSnakeCase(name)}_store_error']), $e);
-                return $this->response(['type' => 'wrong', 'lang' => 'server_wrong']);
-            }
+                return $this->success($data);
+            })->catch(['name' => '${toSnakeCase(name)}_store']);
         }
         $row->name = $request->name;
         if ($row->isDirty()) {
             $validator = Validator::make($request->all(), (new ValidateUpdate${name}())->rules($row));
             if ($validator->fails()) {
-                return $this->response(['type' => 'validation', 'errors' => $validator->errors()]);
+                return $this->failed(['errors' => $validator->errors()]);
             }
-            try {
+            return self::try(function() use($row) {
                 $row->save();
-                $data['extraData'] = [
-                    'inflate' => 'Updated successfully'
+                $data = [
+                    'message' => 'Updated successfully'
                 ];
-                return $this->response(['type' => 'success', 'data' => $data]);
-            } catch (\\Exception $e) {
-                $this->saveError($this->getSystemError(['name' => '${toSnakeCase(name)}_update_error']), $e);
-                return $this->response(['type' => 'wrong', 'lang' => 'server_wrong']);
-            }
+                return $this->success($data);
+            })->catch(['name' => '${toSnakeCase(name)}_update_error']);
         } else {
-            return $this->response(['type' => 'noUpdate', 'title' => '<span class="text-success">You made no changes</span>']);
+            return $this->noChange();
         }
     }
 }`
