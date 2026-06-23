@@ -1,0 +1,31 @@
+<?php
+
+return [
+    'title' => '{{title}}',
+    'breadcrumbs' => [
+        {{breadcrumbs}}
+    ],
+    'text' => [
+        'download' => '_{{download}}_list',
+        'title' => '{{module}} List',
+    ],
+    'label' => [
+        'name' => '{{module}}',
+    ],
+    'placeholder' => [
+        'name' => 'Enter {{name_LOWER}} name',
+    ],
+    'btns' => [
+        'add' => 'Add New {{module}}',
+        'update' => 'Update {{module}}',
+    ],
+    'table' => [
+        'col' => [
+            'id' => 'ID',
+            'serial' => 'Serial',
+            'name' => '{{module}}',
+            'created_at' => 'Created',
+            'action' => 'Actions'
+        ]
+    ]
+];

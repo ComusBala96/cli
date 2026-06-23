@@ -20,17 +20,19 @@
     },
     "license": "MIT",
     "bin": {
-        "os": "./index.js"
+        "os": "./src/index.mjs"
     },
     "scripts": {
-        "start": "node index.js"
+        "start": "node src/index.mjs"
     },
     "repository": {
         "type": "git",
         "url": "git+https://github.com/ComusBala96/cli.git"
     },
     "dependencies": {
-        "inquirer": "8.2.6",
+        "commander": "^14.0.0",
+        "inquirer": "^12.0.0",
+        "ora": "^8.0.0",
         "pluralize": "^8.0.0"
     }
 }

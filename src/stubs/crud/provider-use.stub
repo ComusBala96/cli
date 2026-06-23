@@ -1,0 +1,2 @@
+use App\Repositories\{{space}}\{{module}}Repository;
+use App\Repositories\{{space}}\{{module}}Interface;

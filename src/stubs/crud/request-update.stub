@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Http\Requests\{{space}};
+
+use Illuminate\Foundation\Http\FormRequest;
+
+class ValidateUpdate{{module}} extends FormRequest
+{
+    public function authorize(): bool
+    {
+        return true;
+    }
+
+    public function message(): array
+    {
+        return [];
+    }
+
+    public function rules($row): array
+    {
+        $rules = [];
+
+        if ($row->isDirty('name')) {
+            $rules['name'] = 'required|string|max:253';
+        }
+
+        return $rules;
+    }
+}

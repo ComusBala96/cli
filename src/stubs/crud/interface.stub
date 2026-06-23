@@ -1,0 +1,16 @@
+<?php
+
+namespace App\Repositories\{{space}};
+
+interface {{module}}Interface
+{
+    public function list($model, $request);
+
+    public function create($request, $data);
+
+    public function update($request);
+
+    public function updateTable($request);
+
+    public function deleteTable($request);
+}

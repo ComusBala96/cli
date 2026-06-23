@@ -1,0 +1,55 @@
+<?php
+
+namespace App\Http\Controllers\{{space}};
+
+use App\Traits\BaseTrait;
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use App\Models\{{model}};
+use Illuminate\Routing\Controllers\HasMiddleware;
+
+class {{module}}GetController extends Controller implements HasMiddleware
+{
+    use BaseTrait;
+
+    public static function middleware(): array
+    {
+        return [
+            '{{AUTH_GUARD}}',
+        ];
+    }
+
+    public function __construct()
+    {
+        $this->lang = '{{LANG_PATH}}';
+    }
+
+    public function view{{module}}(Request $request)
+    {
+        $data = [];
+
+        $data = getPageDefault('{{LANG_PATH}}', $request);
+
+        if (isset($request->uuid)) {
+
+            $data['item'] = {{model}}::select(
+                'uuid',
+                'name'
+            )
+            ->where('uuid', '=', $request->uuid)
+            ->first();
+
+        } else {
+
+            $data['items'] = {{model}}::select('uuid')
+                ->get()
+                ->take(1);
+
+        }
+
+        $data['lang'] = $this->lang;
+
+        return view('{{VIEW_PATH}}.view{{module}}')
+            ->with('data', $data);
+    }
+}

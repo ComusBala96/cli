@@ -1,0 +1,93 @@
+import { App, Config, Guard, Lang } from '@orians/core';
+
+export default function () {
+
+    $(function () {
+        const lang = Lang.pageLang;
+        const { placeholder } = lang;
+        if (Guard.domElement('frmCreate{{module}}')) {
+            const rules = {
+                name: {
+                    required: true,
+                    maxlength: 253,
+                },
+            };
+            App.create({
+                element: 'frmCreate{{module}}',
+                validation: true,
+                url: '{{route}}/create',
+                rules: rules,
+            });
+        }
+        if (Guard.domElement('frmUpdate{{module}}')) {
+            const rules = {
+                name: {
+                    required: true,
+                    maxlength: 253,
+                },
+            };
+            App.update({
+                element: 'frmUpdate{{module}}',
+                validation: true,
+                url: '{{route}}/update',
+                rules: rules,
+            });
+        }
+        if (Guard.domElement('dt{{module}}')) {
+            const lang = Lang.pageLang;
+            const { table } = lang;
+            let col_draft = [
+                {
+                    data: 'id',
+                    title: table?.col?.id,
+                    name: 'id',
+                },
+                {
+                    data: null,
+                    title: table?.col?.serial,
+                    name: 'serial',
+                    render: function (data, type, row) {
+                        return `<input type="number" value="${data.serial}" data-name="serial" class="pl-2 py-1 border border-body-dark-blue bg-white text-black focus:outline-none rounded-sm serial z-999">
+                                <input type="hidden" value="${data.id}" data-name="ids" class="ids">`;
+                    },
+                },
+                {
+                    data: 'name',
+                    title: table?.col?.name,
+                    name: 'name',
+                },
+                {
+                    data: 'created_at',
+                    title: table?.col?.created_at,
+                    name: 'created_at',
+                },
+                {
+                    data: null,
+                    title: table?.col?.action,
+                    render: function (data, type, row) {
+                        return `<a href="${Config.app_url}{{route}}/edit/${data.uuid}"><span class="p-2 rounded-full shadow-md text-white" style="background-color:#2edcdc;"><i class="fa fa-edit"></i></span></a>`;
+                    },
+                },
+            ];
+            App.table({
+                element: 'dt{{module}}',
+                select: true,
+                url: '{{route}}/list',
+                columns: col_draft,
+                plugins: { dataTable: true },
+                pdf: [0, 2, 3],
+            })
+            .bulkUpdate({
+                element: 'updateAll{{module}}',
+                url: '{{route}}/table/update',
+                updateCols: true,
+            })
+            .bulkDelete({
+                element: 'deleteAll{{module}}',
+                url: '{{route}}/table/delete',
+            })
+            .downloadPdf({btn: 'download{{module}}Pdf', dataTable: true})
+            .downloadExcel({btn: 'download{{module}}Excel', dataTable: true});
+        }
+    });
+}
