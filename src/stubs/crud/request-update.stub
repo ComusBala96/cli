@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Http\Requests\{{space}};
+namespace App\Http\Requests\[[space]];
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ValidateUpdate{{module}} extends FormRequest
+class ValidateUpdate[[module]] extends FormRequest
 {
     public function authorize(): bool
     {

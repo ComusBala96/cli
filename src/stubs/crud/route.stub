@@ -1,14 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\{{space}}\{{module}}ApiController;
-use App\Http\Controllers\{{space}}\{{module}}GetController;
-use App\Http\Controllers\{{space}}\{{module}}PostController;
+use App\Http\Controllers\[[space]]\[[module]]ApiController;
+use App\Http\Controllers\[[space]]\[[module]]GetController;
+use App\Http\Controllers\[[space]]\[[module]]PostController;
 
-Route::get('{{route}}', [{{module}}GetController::class, 'view{{module}}']);
-Route::get('{{route}}/edit/{uuid}', [{{module}}GetController::class, 'view{{module}}']);
-Route::post('{{route}}/list', [{{module}}ApiController::class, 'list']);
-Route::post('{{route}}/create', [{{module}}PostController::class, 'create']);
-Route::post('{{route}}/update', [{{module}}PostController::class, 'update']);
-Route::post('{{route}}/table/update', [{{module}}PostController::class, 'updateTable']);
-Route::post('{{route}}/table/delete', [{{module}}PostController::class, 'deleteTable']);
+Route::get('[[route]]', [[[module]]GetController::class, 'view[[module]]']);
+Route::get('[[route]]/edit/{uuid}', [[[module]]GetController::class, 'view[[module]]']);
+Route::post('[[route]]/list', [[[module]]ApiController::class, 'list']);
+Route::post('[[route]]/create', [[[module]]PostController::class, 'create']);
+Route::post('[[route]]/update', [[[module]]PostController::class, 'update']);
+Route::post('[[route]]/table/update', [[[module]]PostController::class, 'updateTable']);
+Route::post('[[route]]/table/delete', [[[module]]PostController::class, 'deleteTable']);

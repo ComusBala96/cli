@@ -5,9 +5,9 @@ import { Config } from '../config/Config.mjs';
 import { TemplateEngine } from './TemplateEngine.mjs';
 
 export class StubManager {
-    constructor(projectRoot = null) {
-        this.projectRoot = projectRoot;
-        this.engine = new TemplateEngine();
+    constructor(data = null) {
+        this.projectRoot = data?.project?.root;
+        this.operation = data?.operation;
     }
 
     /*
@@ -20,12 +20,11 @@ export class StubManager {
         if (!this.projectRoot) {
             return null;
         }
-
-        return path.join(this.projectRoot, Config.path('stubs'));
+        return path.resolve(this.projectRoot, Config.stubs(this.projectRoot), this.operation);
     }
 
     packageStubPath() {
-        return path.resolve(import.meta.dirname, '../../stubs');
+        return path.resolve(import.meta.dirname, '../stubs/', this.operation);
     }
 
     /*
@@ -35,7 +34,7 @@ export class StubManager {
     */
 
     resolve(stub) {
-        const projectStub = this.projectRoot ? path.join(this.projectStubPath(), stub) : null;
+        const projectStub = path.join(this.projectStubPath(), stub);
         if (projectStub && fs.existsSync(projectStub)) {
             return projectStub;
         }
@@ -79,7 +78,7 @@ export class StubManager {
     */
 
     render(stub, context = {}) {
-        return this.engine.render(this.get(stub), context);
+        return TemplateEngine.render(this.get(stub), context);
     }
 
     /*

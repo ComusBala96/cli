@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories\{{space}};
+namespace App\Repositories\[[space]];
 
-interface {{module}}Interface
+interface [[module]]Interface
 {
     public function list($model, $request);
 

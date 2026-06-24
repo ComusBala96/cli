@@ -1,29 +1,29 @@
 <?php
 
 return [
-    'title' => '{{title}}',
+    'title' => '[[title]]',
     'breadcrumbs' => [
-        {{breadcrumbs}}
+        [[breadcrumbs]]
     ],
     'text' => [
-        'download' => '_{{download}}_list',
-        'title' => '{{module}} List',
+        'download' => '_[[download]]_list',
+        'title' => '[[name]] List',
     ],
     'label' => [
-        'name' => '{{module}}',
+        'name' => '[[name]]',
     ],
     'placeholder' => [
-        'name' => 'Enter {{name_LOWER}} name',
+        'name' => 'Enter [[name_lower]] name',
     ],
     'btns' => [
-        'add' => 'Add New {{module}}',
-        'update' => 'Update {{module}}',
+        'add' => 'Add New [[name]]',
+        'update' => 'Update [[name]]',
     ],
     'table' => [
         'col' => [
             'id' => 'ID',
             'serial' => 'Serial',
-            'name' => '{{module}}',
+            'name' => '[[name]]',
             'created_at' => 'Created',
             'action' => 'Actions'
         ]

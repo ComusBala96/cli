@@ -21,8 +21,12 @@ export class FileWriter {
         return fs.readFileSync(file, 'utf8');
     }
 
-    static write(file, content) {
+    static write(file, content, overwrite = false) {
         this.ensureDirectory(path.dirname(file));
+        if (this.exists(file) && !overwrite) {
+            console.log(`⚠ Skipped ${path.basename(file)} (already exists)`);
+            return;
+        }
         fs.writeFileSync(file, content, 'utf8');
         console.log(`✔ Created ${path.basename(file)}`);
     }
@@ -35,7 +39,8 @@ export class FileWriter {
 
     static prepend(file, content) {
         const existing = this.read(file);
-        this.write(file, content + '\n' + existing);
+        fs.writeFileSync(file, content + '\n' + existing, 'utf8');
+        console.log(`✔ Updated ${path.basename(file)}`);
     }
 
     static update(file, callback) {

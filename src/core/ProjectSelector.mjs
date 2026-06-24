@@ -48,7 +48,24 @@ export class ProjectSelector {
             },
         ]);
 
-        const platformRoot = Config.platformRoot(platform);
+        let platformRoot;
+
+        switch (platform) {
+            case 'web':
+                platformRoot = Config.webRoot();
+                break;
+
+            case 'mobile':
+                platformRoot = Config.mobileRoot();
+                break;
+
+            case 'desktop':
+                platformRoot = Config.desktopRoot();
+                break;
+
+            default:
+                throw new Error(`Invalid platform: ${platform}`);
+        }
 
         if (!fs.existsSync(platformRoot)) {
             throw new Error(`${platformRoot} not found`);

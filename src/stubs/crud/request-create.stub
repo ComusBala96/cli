@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Http\Requests\{{space}};
+namespace App\Http\Requests\[[space]];
 
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Validation\ValidationException;
 
-class ValidateCreate{{module}} extends FormRequest
+class ValidateCreate[[module]] extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

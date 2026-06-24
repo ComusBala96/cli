@@ -1,1 +1,1 @@
-Route.custom(['{{route}}', '{{route}}/edit/{uuid}'], () => import('./{{script_import_path}}')),
+Route.custom(['[[route]]', '[[route]]/edit/{uuid}'], () => import('./[[scriptPath]]')),

@@ -1,43 +1,43 @@
 <?php
 
-namespace App\Http\Controllers\{{space}};
+namespace App\Http\Controllers\[[space]];
 
 use App\Traits\BaseTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Repositories\{{space}}\{{module}}Interface;
-use App\Http\Requests\{{space}}\ValidateCreate{{module}};
+use App\Repositories\[[space]]\[[module]]Interface;
+use App\Http\Requests\[[space]]\ValidateCreate[[module]];
 
-class {{module}}PostController extends Controller
+class [[module]]PostController extends Controller
 {
     use BaseTrait;
 
-    public function __construct(private {{module}}Interface ${{module}}Interface)
+    public function __construct(private [[module]]Interface $[[module]]Interface)
     {
-        $this->LoadModels(['{{auth}}']);
+        $this->LoadModels(['[[model]]']);
     }
 
-    public function create(ValidateCreate{{module}} $request)
+    public function create(ValidateCreate[[module]] $request)
     {
-        $auth = $this->checkExists($request, '{{auth}}|uuid|created_by', ['id', 'name']);
+        $auth = $this->checkExists($request, '[[auth]]|uuid|created_by', ['id', 'name']);
         if (empty($auth)) {
             return $this->exists();
         }
-        return $this->{{module}}Interface->create($request, ['created_by' => $auth->id]);
+        return $this->[[module]]Interface->create($request, ['created_by' => $auth->id]);
     }
 
     public function update(Request $request)
     {
-        return $this->{{module}}Interface->update($request);
+        return $this->[[module]]Interface->update($request);
     }
 
     public function updateTable(Request $request)
     {
-        return $this->{{module}}Interface->updateTable($request);
+        return $this->[[module]]Interface->updateTable($request);
     }
 
     public function deleteTable(Request $request)
     {
-        return $this->{{module}}Interface->deleteTable($request);
+        return $this->[[module]]Interface->deleteTable($request);
     }
 }

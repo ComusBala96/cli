@@ -1,24 +1,24 @@
 <?php
 
-namespace App\Repositories\{{space}};
+namespace App\Repositories\[[space]];
 
 use Carbon\Carbon;
-use App\Models\{{model}};
+use App\Models\[[model]];
 use Webpatser\Uuid\Uuid;
 use App\Traits\BaseTrait;
 use Yajra\DataTables\DataTables;
 use App\Repositories\BaseRepository;
 use Illuminate\Support\Facades\Validator;
-use App\Repositories\{{space}}\{{module}}Interface;
-use App\Http\Requests\{{space}}\ValidateUpdate{{module}};
+use App\Repositories\[[space]]\[[module]]Interface;
+use App\Http\Requests\[[space]]\ValidateUpdate[[module]];
 
-class {{module}}Repository extends BaseRepository implements {{module}}Interface
+class [[module]]Repository extends BaseRepository implements [[module]]Interface
 {
     use BaseTrait;
 
     public function __construct()
     {
-        $this->LoadModels(['{{model}}']);
+        $this->LoadModels(['[[model]]']);
     }
 
     public function list($model, $request)
@@ -34,11 +34,9 @@ class {{module}}Repository extends BaseRepository implements {{module}}Interface
     public function create($request, $data)
     {
         return self::try(function () use ($request, $data) {
-            $m = new {{model}}();
+            $m = new [[model]]();
             $m->uuid = (string) Uuid::generate(4);
-            $m->serial = $this->getSerial(
-                $this->{{model}}
-            );
+            $m->serial = $this->getSerial($this->[[model]]);
             $m->name = $request->name;
             $m->created_by = $data['created_by'];
             $m->save();
@@ -47,19 +45,19 @@ class {{module}}Repository extends BaseRepository implements {{module}}Interface
                 'reset' => true
             ];
             return $this->success($data);
-        })->catch(['name' => '{{SNAKE_name}}_store']);
+        })->catch(['name' => '[[snake]]_store']);
     }
 
     public function update($request)
     {
-        $row = {{model}}::select('*')->where('uuid', '=', $request->uuid)->first();
+        $row = [[model]]::select('*')->where('uuid', '=', $request->uuid)->first();
         if (empty($row)) {
             return $this->exists();
         }
         $row->name = $request->name;
         $row->updated_by = $request->updated_by;
         if ($row->isDirty()) {
-            $validator = Validator::make($request->all(), (new ValidateUpdate{{module}}())->rules($row));
+            $validator = Validator::make($request->all(), (new ValidateUpdate[[module]]())->rules($row));
             if ($validator->fails()) {
                 return $this->failed(['errors' => $validator->errors()]);
             }
@@ -71,14 +69,14 @@ class {{module}}Repository extends BaseRepository implements {{module}}Interface
                     'reload_table' => true
                 ];
                 return $this->success($data);
-            })->catch(['name' => '{{SNAKE_name}}_update']);
+            })->catch(['name' => '[[snake]]_update']);
         }
         return $this->noChange();
     }
 
     public function updateTable($request)
     {
-        return self::defaultUpdateTable($request, $this->{{model}}, ['name' => '{{SNAKE_name}}_update']);
+        return self::defaultUpdateTable($request, $this->[[model]], ['name' => '[[snake]]_update']);
     }
 
     public function deleteTable($request)
@@ -96,6 +94,6 @@ class {{module}}Repository extends BaseRepository implements {{module}}Interface
         // if (count($errors) > 0) {
         //     return $this->bigErrors($errors);
         // }
-        return self::defaultDelete($request, $this->{{model}}, $errors, ['name' => '{{SNAKE_name}}_delete']);
+        return self::defaultDelete($request, $this->[[model]], $errors, ['name' => '[[snake]]_delete']);
     }
 }

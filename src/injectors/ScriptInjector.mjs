@@ -15,12 +15,12 @@ export class ScriptInjector extends BaseInjector {
     }
 
     inject() {
-        const scriptRouteFile = path.join(Config.script(this.project.root), 'routes', 'index.js');
+        const scriptRouteFile = path.join(Config.script(this.project.root), this.context.scriptRoutePath.toLowerCase() + '.js');
         if (!FileWriter.exists(scriptRouteFile)) {
-            throw new Error('resources/js/routes/index.js not found');
+            throw new Error(scriptRouteFile + ' not found');
         }
         let content = FileWriter.read(scriptRouteFile);
-        const route = this.stubManager.render('crud/script-route.stub', this.context);
+        const route = this.stubManager.render('script-route.stub', this.context);
         content = this.insertUnique(content, '// <orians-script-routes>', route);
         FileWriter.write(scriptRouteFile, content);
         console.log('✔ Script Route Updated');

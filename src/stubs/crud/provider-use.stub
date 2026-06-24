@@ -1,2 +1,2 @@
-use App\Repositories\{{space}}\{{module}}Repository;
-use App\Repositories\{{space}}\{{module}}Interface;
+use App\Repositories\[[space]]\[[module]]Repository;
+use App\Repositories\[[space]]\[[module]]Interface;

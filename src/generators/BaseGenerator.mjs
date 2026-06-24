@@ -11,24 +11,25 @@ import { FileWriter } from '../core/FileWriter.mjs';
 export class BaseGenerator {
     constructor(data) {
         this.data = data;
-        this.project = data.project;
-        this.projectRoot = data.project.root;
+        this.project = data?.project;
+        this.projectRoot = data?.project?.root;
         this.context = ContextBuilder.build(data);
-        this.stubManager = new StubManager(Config.stubs(this.projectRoot));
-        this.templateEngine = new TemplateEngine();
-        this.fileWriter = new FileWriter();
+        this.stubManager = new StubManager(this.data);
     }
 
     render(stubName) {
         const stub = this.stubManager.get(stubName);
-        return this.templateEngine.render(stub, this.context);
+        return TemplateEngine.render(stub, this.context);
     }
 
     write(file, content) {
-        this.fileWriter.write(file, content);
+        FileWriter.write(file, content);
     }
 
     path(key) {
+        if (typeof Config[key] !== 'function') {
+            throw new Error(`Config.${key} is not a function`);
+        }
         return Config[key](this.projectRoot);
     }
 }

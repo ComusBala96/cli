@@ -1,8 +1,8 @@
 @include("common.views.add_new_feature", ["base" => $data["base"], "name" => __($data["lang"] . ".btns.add")])
 <div class="p-6">
-    <form id="frmCreate{{module}}" autocomplete="off">
+    <form id="frmCreate[[module]]" autocomplete="off">
         <input type="hidden" name="base" value="{{ $data["base"] }}" />
-        <input type="hidden" name="created_by" value="{{ Auth::guard('{{auth_guard_name}}')->user()->uuid }}" />
+        <input type="hidden" name="created_by" value="{{ Auth::guard('[[guard]]')->user()->uuid }}" />
         <div class="flex justify-center text-sm">
             <div class="w-full max-w-lg">
                 <div class="mb-4">

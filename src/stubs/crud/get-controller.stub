@@ -1,55 +1,39 @@
 <?php
 
-namespace App\Http\Controllers\{{space}};
+namespace App\Http\Controllers\[[space]];
 
 use App\Traits\BaseTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Models\{{model}};
+use App\Models\[[model]];
 use Illuminate\Routing\Controllers\HasMiddleware;
 
-class {{module}}GetController extends Controller implements HasMiddleware
+class [[module]]GetController extends Controller implements HasMiddleware
 {
     use BaseTrait;
 
     public static function middleware(): array
     {
         return [
-            '{{AUTH_GUARD}}',
+            'auth:[[guard]]',
         ];
     }
 
     public function __construct()
     {
-        $this->lang = '{{LANG_PATH}}';
+        $this->lang = '[[lang]]';
     }
 
-    public function view{{module}}(Request $request)
+    public function view[[module]](Request $request)
     {
         $data = [];
-
-        $data = getPageDefault('{{LANG_PATH}}', $request);
-
+        $data = getPageDefault('[[route]]', $request);
         if (isset($request->uuid)) {
-
-            $data['item'] = {{model}}::select(
-                'uuid',
-                'name'
-            )
-            ->where('uuid', '=', $request->uuid)
-            ->first();
-
+            $data['item'] = [[model]]::select('uuid', 'name')->where('uuid', '=', $request->uuid)->first();
         } else {
-
-            $data['items'] = {{model}}::select('uuid')
-                ->get()
-                ->take(1);
-
+            $data['items'] = [[model]]::select('uuid')->get()->take(1);
         }
-
         $data['lang'] = $this->lang;
-
-        return view('{{VIEW_PATH}}.view{{module}}')
-            ->with('data', $data);
+        return view('[[view]].view[[module]]')->with('data', $data);
     }
 }

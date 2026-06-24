@@ -1,1 +1,1 @@
-$this->app->bind(abstract: {{module}}Interface::class, concrete: {{module}}Repository::class);
+$this->app->bind(abstract: [[module]]Interface::class, concrete: [[module]]Repository::class);
