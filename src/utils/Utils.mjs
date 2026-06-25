@@ -52,7 +52,7 @@ export class Utils {
         return str.split('/')[0];
     }
     static excludeFirstPath(str = '') {
-        return str.split('/').slice(1);
+        return str.split('/').slice(1).join('/');
     }
 
     static excludeLastPath(str = '') {

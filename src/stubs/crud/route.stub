@@ -12,3 +12,4 @@ Route::post('[[route]]/create', [[[module]]PostController::class, 'create']);
 Route::post('[[route]]/update', [[[module]]PostController::class, 'update']);
 Route::post('[[route]]/table/update', [[[module]]PostController::class, 'updateTable']);
 Route::post('[[route]]/table/delete', [[[module]]PostController::class, 'deleteTable']);
+// <orians-routes>

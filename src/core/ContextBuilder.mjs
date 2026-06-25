@@ -27,13 +27,14 @@ export class ContextBuilder {
         const lang = namespace.toLowerCase();
         const title = Utils.convertPath(namespace, '/', ' | ');
         const name = Utils.toSentenceCase(module, ' ');
-        const name_lower = Utils.toSentenceCase(module, ' ');
+        const name_lower = Utils.toSentenceCase(module, ' ').toLowerCase();
         const breadcrumbs = Utils.generateBreadCrumbs(route, firstPath);
         const download = Utils.toSnakeCase(module);
         const table = Utils.tableName(model);
         const snake = Utils.toSnakeCase(module);
-        const scriptPath = Utils.excludeFirstPath(namespace).join('/').toLowerCase();
+        const scriptPath = Utils.excludeFirstPath(namespace).toLowerCase();
         const scriptRoutePath = Utils.excludeLastPath(Utils.excludeLastPath(pagePath));
+        const routePath = Utils.excludeLastPath(namespace);
 
         // file path
         const getControllerFile = path.join(this.path('controller'), namespace, `${module}GetController.php`);
@@ -52,7 +53,7 @@ export class ContextBuilder {
         const viewFile = path.join(this.path('view'), pagePath, `view${module}.blade.php`);
         const viewAddFile = path.join(this.path('view'), pagePath, 'includes', 'viewAdd.blade.php');
         const viewEditFile = path.join(this.path('view'), pagePath, 'includes', 'viewEdit.blade.php');
-        const routeFile = path.join(this.path('route'), `${namespace.toLowerCase()}.php`);
+        const routeFile = path.join(this.path('route'), routePath, `${snake}.php`);
         return {
             namespace,
             module,

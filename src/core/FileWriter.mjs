@@ -42,18 +42,44 @@ export class FileWriter {
         console.log(`✔ Created ${path.basename(file)}`);
     }
     static insertUnique(content, marker, value) {
-        if (content.includes(value.trim())) {
-            return content;
+        if (!marker || !content.includes(marker)) {
+            console.log(`⚠ Marker "${marker}" not found`);
+            return {
+                updated: false,
+                content,
+            };
         }
-        return content.replace(marker, `${marker}\n${value}`);
+        const normalize = (str) =>
+            str
+                .replace(/\r\n/g, '\n')
+                .replace(/[ \t]+/g, ' ')
+                .trim();
+        const normalizedContent = normalize(content);
+        const normalizedValue = normalize(value);
+        if (normalizedContent.includes(normalizedValue)) {
+            console.log(`⚠ Content already exists. Skipping injection.`);
+            return {
+                updated: false,
+                content,
+            };
+        }
+        console.log(`✔ Injecting content into marker "${marker}"`);
+        return {
+            updated: true,
+            content: content.replace(marker, `${marker}\n${value}`),
+        };
     }
     static inject(file, replaceContent, injectKey = '') {
         if (!this.exists(file)) {
             throw new Error(file + ' not found');
         }
         let content = this.read(file);
-        content = this.insertUnique(content, injectKey, replaceContent);
-        this.update(file, content);
+        const result = this.insertUnique(content, injectKey, replaceContent);
+        if (!result.updated) {
+            console.log(`⚠ ${path.basename(file)} unchanged`);
+            return;
+        }
+        this.update(file, result.content);
     }
     static append(file, content) {
         this.ensureDirectory(path.dirname(file));
