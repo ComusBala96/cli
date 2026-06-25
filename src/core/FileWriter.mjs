@@ -23,14 +23,38 @@ export class FileWriter {
 
     static write(file, content, overwrite = false) {
         this.ensureDirectory(path.dirname(file));
-        if (this.exists(file) && !overwrite) {
-            console.log(`⚠ Skipped ${path.basename(file)} (already exists)`);
-            return;
+        if (!overwrite) {
+            const basename = path.basename(file);
+            const migrationMatch = basename.match(/^\d{4}_\d{2}_\d{2}_\d{6}_(.+)\.php$/);
+            if (migrationMatch) {
+                const migrationName = migrationMatch[1];
+                const exists = fs.readdirSync(path.dirname(file)).some((f) => f.endsWith(`_${migrationName}.php`));
+                if (exists) {
+                    console.log(`⚠ Skipped ${migrationName} (already exists)`);
+                    return;
+                }
+            } else if (this.exists(file)) {
+                console.log(`⚠ Skipped ${basename} (already exists)`);
+                return;
+            }
         }
         fs.writeFileSync(file, content, 'utf8');
         console.log(`✔ Created ${path.basename(file)}`);
     }
-
+    static insertUnique(content, marker, value) {
+        if (content.includes(value.trim())) {
+            return content;
+        }
+        return content.replace(marker, `${marker}\n${value}`);
+    }
+    static inject(file, replaceContent, injectKey = '') {
+        if (!this.exists(file)) {
+            throw new Error(file + ' not found');
+        }
+        let content = this.read(file);
+        content = this.insertUnique(content, injectKey, replaceContent);
+        this.update(file, content);
+    }
     static append(file, content) {
         this.ensureDirectory(path.dirname(file));
         fs.appendFileSync(file, '\n' + content, 'utf8');
@@ -43,10 +67,10 @@ export class FileWriter {
         console.log(`✔ Updated ${path.basename(file)}`);
     }
 
-    static update(file, callback) {
-        const content = this.read(file);
-        const updated = callback(content);
-        this.write(file, updated);
+    static update(file, content) {
+        this.ensureDirectory(path.dirname(file));
+        fs.writeFileSync(file, content, 'utf8');
+        console.log(`✔ ${path.basename(file)} Updated`);
     }
 
     static remove(file) {

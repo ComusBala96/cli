@@ -14,7 +14,7 @@ class [[module]]PostController extends Controller
 
     public function __construct(private [[module]]Interface $[[module]]Interface)
     {
-        $this->LoadModels(['[[model]]']);
+        $this->LoadModels(['[[auth]]']);
     }
 
     public function create(ValidateCreate[[module]] $request)

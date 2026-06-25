@@ -6,11 +6,6 @@ import { Config } from '../config/Config.mjs';
 
 export class ProjectSelector {
     static async select() {
-        /*
-        |--------------------------------------------------------------------------
-        | Standalone Laravel Project
-        |--------------------------------------------------------------------------
-        */
 
         if (!Config.workspace()) {
             return {
@@ -20,11 +15,6 @@ export class ProjectSelector {
             };
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Select Platform
-        |--------------------------------------------------------------------------
-        */
 
         const { platform } = await inquirer.prompt([
             {
@@ -71,11 +61,6 @@ export class ProjectSelector {
             throw new Error(`${platformRoot} not found`);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Find Projects
-        |--------------------------------------------------------------------------
-        */
 
         const projects = fs
             .readdirSync(platformRoot, { withFileTypes: true })
@@ -89,11 +74,6 @@ export class ProjectSelector {
             throw new Error(`No projects found in ${platformRoot}`);
         }
 
-        /*
-        |--------------------------------------------------------------------------
-        | Select Project
-        |--------------------------------------------------------------------------
-        */
         const { project } = await inquirer.prompt([
             {
                 type: 'list',
@@ -108,12 +88,6 @@ export class ProjectSelector {
             root: path.join(platformRoot, project),
         };
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Helpers
-    |--------------------------------------------------------------------------
-    */
 
     static projects(dir) {
         if (!fs.existsSync(dir)) {

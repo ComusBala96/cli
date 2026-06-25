@@ -9,13 +9,6 @@ export class StubManager {
         this.projectRoot = data?.project?.root;
         this.operation = data?.operation;
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Stub Paths
-    |--------------------------------------------------------------------------
-    */
-
     projectStubPath() {
         if (!this.projectRoot) {
             return null;
@@ -26,12 +19,6 @@ export class StubManager {
     packageStubPath() {
         return path.resolve(import.meta.dirname, '../stubs/', this.operation);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Find Stub
-    |--------------------------------------------------------------------------
-    */
 
     resolve(stub) {
         const projectStub = path.join(this.projectStubPath(), stub);
@@ -45,22 +32,10 @@ export class StubManager {
         throw new Error(`Stub not found: ${stub}`);
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Raw Content
-    |--------------------------------------------------------------------------
-    */
-
     get(stub) {
         const file = this.resolve(stub);
         return fs.readFileSync(file, 'utf8');
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | Exists
-    |--------------------------------------------------------------------------
-    */
 
     exists(stub) {
         try {
@@ -71,21 +46,9 @@ export class StubManager {
         }
     }
 
-    /*
-    |--------------------------------------------------------------------------
-    | Render
-    |--------------------------------------------------------------------------
-    */
-
     render(stub, context = {}) {
         return TemplateEngine.render(this.get(stub), context);
     }
-
-    /*
-    |--------------------------------------------------------------------------
-    | List
-    |--------------------------------------------------------------------------
-    */
 
     list(directory = '') {
         const base = path.join(this.projectStubPath() ?? this.packageStubPath(), directory);
