@@ -6,7 +6,7 @@ use Orian\Framework\Traits\BaseTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class [[module]] extends Model
+class [[model]] extends Model
 {
     use HasFactory, BaseTrait;
     protected $table = '[[table]]';

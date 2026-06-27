@@ -14,11 +14,11 @@ export class DeleteCommand {
                 {
                     type: 'list',
                     name: 'operation',
-                    message: 'Select Generator',
+                    message: 'Remove Generator',
                     choices: [
-                        { name: 'CRUD Generator', value: 'crud' },
-                        { name: 'Table Generator', value: 'table' },
-                        { name: 'Interface Generator', value: 'interface' },
+                        { name: 'CRUD Remove', value: 'crud' },
+                        { name: 'Table Remove', value: 'table' },
+                        { name: 'Interface Remove', value: 'interface' },
                     ],
                 },
             ]);
@@ -43,13 +43,6 @@ export class DeleteCommand {
                     message: 'Namespace:',
                     validate: value =>
                         value.trim().length > 0 || 'Namespace is required',
-                },
-                {
-                    type: 'input',
-                    name: 'route',
-                    message: 'Route:',
-                    validate: value =>
-                        value.trim().length > 0 || 'Route is required',
                 },
                 {
                     type: 'confirm',

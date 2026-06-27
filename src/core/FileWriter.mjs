@@ -20,23 +20,23 @@ export class FileWriter {
         }
         return fs.readFileSync(file, 'utf8');
     }
-
+    static resolveFile(file) {
+        const basename = path.basename(file);
+        const dir = path.dirname(file);
+        const migrationMatch = basename.match(/^\d{4}_\d{2}_\d{2}_\d{6}_(.+)\.php$/);
+        if (!migrationMatch) {
+            return file;
+        }
+        const migrationName = migrationMatch[1];
+        const found = fs.readdirSync(dir).find((f) => f.endsWith(`_${migrationName}.php`));
+        return found ? path.join(dir, found) : file;
+    }
     static write(file, content, overwrite = false) {
         this.ensureDirectory(path.dirname(file));
-        if (!overwrite) {
-            const basename = path.basename(file);
-            const migrationMatch = basename.match(/^\d{4}_\d{2}_\d{2}_\d{6}_(.+)\.php$/);
-            if (migrationMatch) {
-                const migrationName = migrationMatch[1];
-                const exists = fs.readdirSync(path.dirname(file)).some((f) => f.endsWith(`_${migrationName}.php`));
-                if (exists) {
-                    console.log(`⚠ Skipped ${migrationName} (already exists)`);
-                    return;
-                }
-            } else if (this.exists(file)) {
-                console.log(`⚠ Skipped ${basename} (already exists)`);
-                return;
-            }
+        const target = this.resolveFile(file);
+        if (!overwrite && this.exists(target)) {
+            console.log(`⚠ Skipped ${path.basename(target)} (already exists)`);
+            return;
         }
         fs.writeFileSync(file, content, 'utf8');
         console.log(`✔ Created ${path.basename(file)}`);
@@ -50,6 +50,11 @@ export class FileWriter {
 
     static remove(file, stopAt) {
         if (!this.exists(file)) {
+            return;
+        }
+        const target = this.resolveFile(file);
+        if (!this.exists(target)) {
+            console.log(`⚠ ${path.basename(target)} not found`);
             return;
         }
         fs.unlinkSync(file);
@@ -122,8 +127,8 @@ export class FileWriter {
             return;
         }
         const block = `${start}
-                        ${content}
-                        ${end}`;
+${content.trim()}
+${end}`;
         source = source.replace(marker, `${marker}\n${block}`);
         this.update(file, source);
     }
@@ -139,7 +144,7 @@ export class FileWriter {
             console.log(`⚠ Block ${key} not found`);
             return;
         }
-        source = source.replace(regex, `${start}\n${content}\n${end}`);
+        source = source.replace(regex, `${start}\n${content.trim()}\n${end}`);
         this.update(file, source);
     }
 

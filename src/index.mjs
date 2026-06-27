@@ -15,10 +15,10 @@ switch (command) {
         await new MakeCommand().run();
         break;
 
-    case 'delete':
+    case 'remove':
         await new DeleteCommand().run();
         break;
 
     default:
-        console.log(`Usage:\n os init\n os make\n os delete`);
+        console.log(`Usage:\n os init\n os make\n os remove`);
 }
