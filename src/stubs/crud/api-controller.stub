@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\[[space]];
 
-use App\Traits\BaseTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Orian\Framework\Traits\BaseTrait;
 use App\Repositories\[[space]]\[[module]]Interface;
 
 class [[module]]ApiController extends Controller

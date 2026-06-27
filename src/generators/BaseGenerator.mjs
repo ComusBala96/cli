@@ -21,7 +21,19 @@ export class BaseGenerator {
         FileWriter.write(file, content);
     }
 
-    inject(file, replaceContent, injectKey = '') {
-        FileWriter.inject(file, replaceContent, injectKey);
+    remove(file, stopAt) {
+        FileWriter.remove(file, stopAt);
+    }
+
+    inject(file, content, marker, key) {
+        FileWriter.injectBlock(file, marker, key, content);
+    }
+
+    updateInject(file, content, key) {
+        FileWriter.updateBlock(file, key, content);
+    }
+
+    removeInject(file, key) {
+        FileWriter.removeBlock(file, key);
     }
 }

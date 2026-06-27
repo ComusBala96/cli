@@ -5,7 +5,7 @@ import { TableGenerator } from '../generators/TableGenerator.mjs';
 import { InterfaceGenerator } from '../generators/InterfaceGenerator.mjs';
 import { ProjectSelector } from '../core/ProjectSelector.mjs';
 
-export class MakeCommand {
+export class DeleteCommand {
     async run() {
         try {
             const project = await ProjectSelector.select();
@@ -28,33 +28,41 @@ export class MakeCommand {
                     type: 'input',
                     name: 'module',
                     message: 'Module Name:',
-                    validate: (value) => value.trim().length > 0 || 'Module name is required',
+                    validate: value =>
+                        value.trim().length > 0 || 'Module name is required',
                 },
                 {
                     type: 'input',
                     name: 'model',
                     message: 'Model:',
-                    default: (answers) => answers.module,
+                    default: answers => answers.module,
                 },
                 {
                     type: 'input',
                     name: 'namespace',
                     message: 'Namespace:',
-                    validate: (value) => value.trim().length > 0 || 'Namespace is required',
+                    validate: value =>
+                        value.trim().length > 0 || 'Namespace is required',
                 },
                 {
                     type: 'input',
                     name: 'route',
                     message: 'Route:',
-                    validate: (value) => value.trim().length > 0 || 'Route is required',
+                    validate: value =>
+                        value.trim().length > 0 || 'Route is required',
                 },
                 {
                     type: 'confirm',
-                    name: 'generate',
-                    message: 'Generate migration?',
-                    default: true,
+                    name: 'force',
+                    message: 'Are you sure you want to delete these generated files?',
+                    default: false,
                 },
             ]);
+
+            if (!answers.force) {
+                console.log('\n⚠ Deletion cancelled.\n');
+                return;
+            }
 
             const payload = {
                 ...answers,
@@ -64,22 +72,22 @@ export class MakeCommand {
 
             switch (operation) {
                 case 'crud':
-                    await new CrudGenerator(payload).run();
+                    await new CrudGenerator(payload).delete();
                     break;
 
                 case 'table':
-                    await new TableGenerator(payload).run();
+                    await new TableGenerator(payload).delete();
                     break;
 
                 case 'interface':
-                    await new InterfaceGenerator(payload).run();
+                    await new InterfaceGenerator(payload).delete();
                     break;
 
                 default:
                     throw new Error(`Unknown generator: ${operation}`);
             }
 
-            console.log('\n✅ Generation completed successfully.\n');
+            console.log('\n🗑️ Deletion completed successfully.\n');
         } catch (error) {
             console.error('\n❌ Error\n');
             console.error(error.message);

@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers\[[space]];
 
-use App\Traits\BaseTrait;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Orian\Framework\Traits\BaseTrait;
 use App\Repositories\[[space]]\[[module]]Interface;
 use App\Http\Requests\[[space]]\ValidateCreate[[module]];
 
@@ -28,7 +28,11 @@ class [[module]]PostController extends Controller
 
     public function update(Request $request)
     {
-        return $this->[[module]]Interface->update($request);
+        $auth = $this->checkExists($request, '[[auth]]|uuid|updated_by', ['id', 'name']);
+        if (empty($auth)) {
+            return $this->exists();
+        }
+        return $this->[[module]]Interface->update($request, ['updated_by' => $auth->id]);
     }
 
     public function updateTable(Request $request)

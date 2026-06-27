@@ -5,9 +5,9 @@ namespace App\Repositories\[[space]];
 use Carbon\Carbon;
 use App\Models\[[model]];
 use Webpatser\Uuid\Uuid;
-use App\Traits\BaseTrait;
 use Yajra\DataTables\DataTables;
 use App\Repositories\BaseRepository;
+use Orian\Framework\Traits\BaseTrait;
 use Illuminate\Support\Facades\Validator;
 use App\Repositories\[[space]]\[[module]]Interface;
 use App\Http\Requests\[[space]]\ValidateUpdate[[module]];
@@ -48,7 +48,7 @@ class [[module]]Repository extends BaseRepository implements [[module]]Interface
         })->catch(['name' => '[[snake]]_store']);
     }
 
-    public function update($request)
+    public function update($request, $data)
     {
         $row = [[model]]::select('*')->where('uuid', '=', $request->uuid)->first();
         if (empty($row)) {

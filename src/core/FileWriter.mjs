@@ -41,57 +41,6 @@ export class FileWriter {
         fs.writeFileSync(file, content, 'utf8');
         console.log(`✔ Created ${path.basename(file)}`);
     }
-    static insertUnique(content, marker, value) {
-        if (!marker || !content.includes(marker)) {
-            console.log(`⚠ Marker "${marker}" not found`);
-            return {
-                updated: false,
-                content,
-            };
-        }
-        const normalize = (str) =>
-            str
-                .replace(/\r\n/g, '\n')
-                .replace(/[ \t]+/g, ' ')
-                .trim();
-        const normalizedContent = normalize(content);
-        const normalizedValue = normalize(value);
-        if (normalizedContent.includes(normalizedValue)) {
-            console.log(`⚠ Content already exists. Skipping injection.`);
-            return {
-                updated: false,
-                content,
-            };
-        }
-        console.log(`✔ Injecting content into marker "${marker}"`);
-        return {
-            updated: true,
-            content: content.replace(marker, `${marker}\n${value}`),
-        };
-    }
-    static inject(file, replaceContent, injectKey = '') {
-        if (!this.exists(file)) {
-            throw new Error(file + ' not found');
-        }
-        let content = this.read(file);
-        const result = this.insertUnique(content, injectKey, replaceContent);
-        if (!result.updated) {
-            console.log(`⚠ ${path.basename(file)} unchanged`);
-            return;
-        }
-        this.update(file, result.content);
-    }
-    static append(file, content) {
-        this.ensureDirectory(path.dirname(file));
-        fs.appendFileSync(file, '\n' + content, 'utf8');
-        console.log(`✔ Updated ${path.basename(file)}`);
-    }
-
-    static prepend(file, content) {
-        const existing = this.read(file);
-        fs.writeFileSync(file, content + '\n' + existing, 'utf8');
-        console.log(`✔ Updated ${path.basename(file)}`);
-    }
 
     static update(file, content) {
         this.ensureDirectory(path.dirname(file));
@@ -99,15 +48,115 @@ export class FileWriter {
         console.log(`✔ ${path.basename(file)} Updated`);
     }
 
-    static remove(file) {
-        if (this.exists(file)) {
-            fs.unlinkSync(file);
-            console.log(`✔ Deleted ${path.basename(file)}`);
+    static remove(file, stopAt) {
+        if (!this.exists(file)) {
+            return;
+        }
+        fs.unlinkSync(file);
+        console.log(`✔ Deleted ${path.basename(file)}`);
+        this.removeEmptyDirectories(path.dirname(file), stopAt);
+    }
+    static removeEmptyDirectories(dir, stopAt) {
+        while (dir.startsWith(stopAt)) {
+            if (!fs.existsSync(dir) || fs.readdirSync(dir).length > 0) {
+                break;
+            }
+            fs.rmdirSync(dir);
+            console.log(`✔ Removed empty directory ${path.basename(dir)}`);
+            const parent = path.dirname(dir);
+            if (parent === dir || parent === stopAt) {
+                break;
+            }
+            dir = parent;
         }
     }
+    // static insertUnique(content, marker, value) {
+    //     if (!marker || !content.includes(marker)) {
+    //         console.log(`⚠ Marker "${marker}" not found`);
+    //         return {
+    //             updated: false,
+    //             content,
+    //         };
+    //     }
+    //     const normalize = (str) =>
+    //         str
+    //             .replace(/\r\n/g, '\n')
+    //             .replace(/[ \t]+/g, ' ')
+    //             .trim();
+    //     const normalizedContent = normalize(content);
+    //     const normalizedValue = normalize(value);
+    //     if (normalizedContent.includes(normalizedValue)) {
+    //         console.log(`⚠ Content already exists. Skipping injection.`);
+    //         return {
+    //             updated: false,
+    //             content,
+    //         };
+    //     }
+    //     console.log(`✔ Injecting content into marker "${marker}"`);
+    //     return {
+    //         updated: true,
+    //         content: content.replace(marker, `${marker}\n${value}`),
+    //     };
+    // }
+    // static inject(file, replaceContent, injectKey = '') {
+    //     if (!this.exists(file)) {
+    //         throw new Error(file + ' not found');
+    //     }
+    //     let content = this.read(file);
+    //     const result = this.insertUnique(content, injectKey, replaceContent);
+    //     if (!result.updated) {
+    //         console.log(`⚠ ${path.basename(file)} unchanged`);
+    //         return;
+    //     }
+    //     this.update(file, result.content);
+    // }
+    static injectBlock(file, marker, key, content) {
+        if (!this.exists(file)) {
+            throw new Error(`${file} not found`);
+        }
+        let source = this.read(file);
+        const start = `// <orians:${key}:start>`;
+        const end = `// <orians:${key}:end>`;
+        if (source.includes(start)) {
+            console.log(`⚠ ${key} already exists`);
+            return;
+        }
+        const block = `${start}
+                        ${content}
+                        ${end}`;
+        source = source.replace(marker, `${marker}\n${block}`);
+        this.update(file, source);
+    }
+    static updateBlock(file, key, content) {
+        if (!this.exists(file)) {
+            throw new Error(`${file} not found`);
+        }
+        const start = `// <orians:${key}:start>`;
+        const end = `// <orians:${key}:end>`;
+        let source = this.read(file);
+        const regex = new RegExp(`${start}[\\s\\S]*?${end}`, 'g');
+        if (!regex.test(source)) {
+            console.log(`⚠ Block ${key} not found`);
+            return;
+        }
+        source = source.replace(regex, `${start}\n${content}\n${end}`);
+        this.update(file, source);
+    }
 
-    static copy(source, destination) {
-        this.ensureDirectory(path.dirname(destination));
-        fs.copyFileSync(source, destination);
+    static removeBlock(file, key) {
+        if (!this.exists(file)) {
+            return;
+        }
+        const start = `// <orians:${key}:start>`;
+        const end = `// <orians:${key}:end>`;
+        let source = this.read(file);
+        const regex = new RegExp(`\\n?${start}[\\s\\S]*?${end}\\n?`, 'g');
+        if (!regex.test(source)) {
+            console.log(`⚠ Block ${key} not found`);
+            return;
+        }
+        source = source.replace(regex, '');
+        this.update(file, source);
+        console.log(`✔ Removed ${key}`);
     }
 }

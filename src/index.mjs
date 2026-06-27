@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+import { DeleteCommand } from './commands/DeleteCommand.mjs';
 import { InitCommand } from './commands/InitCommand.mjs';
 import { MakeCommand } from './commands/MakeCommand.mjs';
 
@@ -14,11 +15,10 @@ switch (command) {
         await new MakeCommand().run();
         break;
 
-    default:
-        console.log(`
-                    Usage:
+    case 'delete':
+        await new DeleteCommand().run();
+        break;
 
-                    os init
-                    os make
-                    `);
+    default:
+        console.log(`Usage:\n os init\n os make\n os delete`);
 }

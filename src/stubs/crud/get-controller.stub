@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\[[space]];
 
-use App\Traits\BaseTrait;
 use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
 use App\Models\[[model]];
+use App\Http\Controllers\Controller;
+use Orian\Framework\Traits\BaseTrait;
 use Illuminate\Routing\Controllers\HasMiddleware;
 
 class [[module]]GetController extends Controller implements HasMiddleware
