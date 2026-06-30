@@ -1,0 +1,39 @@
+<?php
+
+namespace App\Http\Controllers\[[space]];
+
+use Illuminate\Http\Request;
+use App\Models\[[model]];
+use App\Http\Controllers\Controller;
+use Orian\Framework\Traits\BaseTrait;
+use Illuminate\Routing\Controllers\HasMiddleware;
+
+class [[module]]GetController extends Controller implements HasMiddleware
+{
+    use BaseTrait;
+
+    public static function middleware(): array
+    {
+        return [
+            'auth:[[guard]]',
+        ];
+    }
+
+    public function __construct()
+    {
+        $this->lang = '[[lang]]';
+    }
+
+    public function view[[module]](Request $request)
+    {
+        $data = [];
+        $data = getPageDefault('[[route]]', $request);
+        if (isset($request->uuid)) {
+            $data['item'] = [[model]]::select('uuid', 'name')->where('uuid', '=', $request->uuid)->first();
+        } else {
+            $data['items'] = [[model]]::select('uuid')->get()->take(1);
+        }
+        $data['lang'] = $this->lang;
+        return view('[[view]].view[[module]]')->with('data', $data);
+    }
+}

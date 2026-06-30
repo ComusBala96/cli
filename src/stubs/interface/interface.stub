@@ -1,0 +1,8 @@
+<?php
+
+namespace App\Repositories\[[space]];
+
+interface [[module]]Interface
+{
+    public function update($request, $data);
+}

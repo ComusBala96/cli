@@ -1,0 +1,23 @@
+import { App, Config, Guard, Lang } from '@orians/core';
+
+export default function () {
+
+    $(function () {
+        const lang = Lang.pageLang;
+        const { placeholder } = lang;
+        if (Guard.domElement('frmUpdate[[module]]')) {
+            const rules = {
+                name: {
+                    required: true,
+                    maxlength: 253,
+                },
+            };
+            App.update({
+                element: 'frmUpdate[[module]]',
+                validation: true,
+                url: '[[route]]/update',
+                rules: rules,
+            });
+        }
+    });
+}

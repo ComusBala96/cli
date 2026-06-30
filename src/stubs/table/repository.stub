@@ -1,0 +1,83 @@
+<?php
+
+namespace App\Repositories\[[space]];
+
+use Carbon\Carbon;
+use App\Models\[[model]];
+use Webpatser\Uuid\Uuid;
+use Yajra\DataTables\DataTables;
+use Orian\Framework\Helper\Helper;
+use App\Repositories\BaseRepository;
+use Orian\Framework\Traits\BaseTrait;
+use Illuminate\Support\Facades\Validator;
+use App\Repositories\[[space]]\[[module]]Interface;
+use App\Http\Requests\[[space]]\ValidateUpdate[[module]];
+
+class [[module]]Repository extends BaseRepository implements [[module]]Interface
+{
+    use BaseTrait;
+
+    public function __construct()
+    {
+        $this->LoadModels(['[[model]]']);
+    }
+
+    public function list($model, $request)
+    {
+        $model = $model::select(Helper::exceptColumns('[[table]]', ['created_by', 'updated_by', 'updated_at']))->orderBy('serial', 'ASC');
+        return DataTables::of($model)
+            ->editColumn('created_at', function ($item) {
+                return Carbon::parse($item->created_at)->format('d-m-Y');
+            })
+            ->make(true);
+    }
+
+    public function update($request, $data)
+    {
+        $row = [[model]]::select('*')->where('uuid', '=', $request->uuid)->first();
+        if (empty($row)) {
+            return $this->exists();
+        }
+        $row->name = $request->name;
+        $row->updated_by = $data['updated_by'];
+        if ($row->isDirty()) {
+            $validator = Validator::make($request->all(), (new ValidateUpdate[[module]]())->rules($row));
+            if ($validator->fails()) {
+                return $this->failed(['errors' => $validator->errors()]);
+            }
+            return self::try(function () use ($request, $row) {
+                $row->save();
+                $data = [
+                    'message' => 'Updated successfully',
+                    'redirect' => $request->base,
+                    'reload_table' => true
+                ];
+                return $this->success($data);
+            })->catch(['name' => '[[snake]]_update']);
+        }
+        return $this->noChange();
+    }
+
+    public function updateTable($request)
+    {
+        return self::defaultUpdateTable($request, $this->[[model]], ['name' => '[[snake]]_update']);
+    }
+
+    public function deleteTable($request)
+    {
+        $errors = [];
+        // $errors = $this->checkInUse([
+        //     'rows' => $i,
+        //     'search' => ['id', 'id'],
+        //     'denied' => ['name', 'name'],
+        //     'targetModel' => [$this->User, $this->Permission],
+        //     'targetCol' => ['id', 'id'],
+        //     'exists' => ['FileSystem', 'FileSystem'],
+        //     'in' => ['User', 'Permission']
+        // ]);
+        // if (count($errors) > 0) {
+        //     return $this->bigErrors($errors);
+        // }
+        return self::defaultDelete($request, $this->[[model]], $errors, ['name' => '[[snake]]_delete']);
+    }
+}

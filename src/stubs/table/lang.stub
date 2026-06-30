@@ -1,0 +1,30 @@
+<?php
+
+return [
+    'title' => '[[title]]',
+    'breadcrumbs' => [
+        [[breadcrumbs]]
+    ],
+    'text' => [
+        'download' => '_[[download]]_list',
+        'title' => '[[name]] List',
+    ],
+    'label' => [
+        'name' => '[[name]]',
+    ],
+    'placeholder' => [
+        'name' => 'Enter [[name_lower]] name',
+    ],
+    'btns' => [
+        'update' => 'Update [[name]]',
+    ],
+    'table' => [
+        'col' => [
+            'id' => 'ID',
+            'serial' => 'Serial',
+            'name' => '[[name]]',
+            'created_at' => 'Created',
+            'action' => 'Actions'
+        ]
+    ]
+];

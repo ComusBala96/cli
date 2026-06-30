@@ -1,0 +1,23 @@
+<?php
+
+namespace App\Http\Controllers\[[space]];
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Orian\Framework\Traits\BaseTrait;
+use App\Repositories\[[space]]\[[module]]Interface;
+
+class [[module]]ApiController extends Controller
+{
+    use BaseTrait;
+
+    public function __construct(private [[module]]Interface $[[module]]Interface)
+    {
+        $this->LoadModels(['[[model]]']);
+    }
+
+    public function list(Request $request)
+    {
+        return $this->[[module]]Interface->list($this->[[model]], $request);
+    }
+}

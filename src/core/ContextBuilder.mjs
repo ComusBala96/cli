@@ -53,6 +53,7 @@ export class ContextBuilder {
         const viewFile = path.join(this.path('view'), pagePath, `view${module}.blade.php`);
         const viewAddFile = path.join(this.path('view'), pagePath, 'includes', 'viewAdd.blade.php');
         const viewEditFile = path.join(this.path('view'), pagePath, 'includes', 'viewEdit.blade.php');
+        const viewShowFile = path.join(this.path('view'), pagePath, 'includes', `show${module}.blade.php`);
         const routeFile = path.join(this.path('route'), routePath, `${snake}.php`);
         return {
             namespace,

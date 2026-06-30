@@ -1,0 +1,28 @@
+<?php
+
+namespace App\Http\Controllers\[[space]];
+
+use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
+use Orian\Framework\Traits\BaseTrait;
+use App\Repositories\[[space]]\[[module]]Interface;
+use App\Http\Requests\[[space]]\ValidateCreate[[module]];
+
+class [[module]]PostController extends Controller
+{
+    use BaseTrait;
+
+    public function __construct(private [[module]]Interface $[[module]]Interface)
+    {
+        $this->LoadModels(['[[auth]]']);
+    }
+
+    public function update(Request $request)
+    {
+        $auth = $this->checkExists($request, '[[auth]]|uuid|updated_by', ['id', 'name']);
+        if (empty($auth)) {
+            return $this->exists();
+        }
+        return $this->[[module]]Interface->update($request, ['updated_by' => $auth->id]);
+    }
+}

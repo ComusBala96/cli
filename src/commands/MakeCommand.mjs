@@ -51,11 +51,14 @@ export class MakeCommand {
                 {
                     type: 'confirm',
                     name: 'generate',
-                    message: 'Generate migration?',
-                    default: true,
+                    message: 'Are you sure you want to generate these files?',
+                    default: false,
                 },
             ]);
-
+            if (!answers.generate) {
+                console.log('\n⚠ Generation cancelled.\n');
+                return;
+            }
             const payload = {
                 ...answers,
                 project,

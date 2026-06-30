@@ -1,0 +1,10 @@
+<?php
+
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\[[space]]\[[module]]ApiController;
+use App\Http\Controllers\[[space]]\[[module]]GetController;
+use App\Http\Controllers\[[space]]\[[module]]PostController;
+
+Route::get('[[route]]', [[[module]]GetController::class, 'view[[module]]']);
+Route::post('[[route]]/update', [[[module]]PostController::class, 'update']);
+// <orians-routes>
