@@ -30,7 +30,7 @@
                                 <table id="dt[[module]]" class="table-bordered table-striped w-[99%]"></table>
                             </div>
                         @else
-                            @include("common.views.no_data_found")
+                            @include("common.views.no_data_found", ['button'=>''])
                         @endif
                     </div>
                 </div>

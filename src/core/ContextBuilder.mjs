@@ -33,7 +33,7 @@ export class ContextBuilder {
         const table = Utils.tableName(model);
         const snake = Utils.toSnakeCase(module);
         const scriptPath = Utils.excludeFirstPath(namespace).toLowerCase();
-        const scriptRoutePath = Utils.excludeLastPath(Utils.excludeLastPath(pagePath));
+        const scriptRoutePath = path.join(firstPath.toLowerCase(), 'pages');
         const routePath = Utils.excludeLastPath(namespace);
 
         // file path
@@ -76,6 +76,7 @@ export class ContextBuilder {
             snake,
             scriptPath,
             scriptRoutePath,
+            routePath,
             getControllerFile,
             postControllerFile,
             apiControllerFile,
@@ -92,6 +93,7 @@ export class ContextBuilder {
             viewFile,
             viewAddFile,
             viewEditFile,
+            viewShowFile,
             routeFile,
         };
     }
